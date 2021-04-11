@@ -13,7 +13,10 @@
     justify-content: center;
     background: #eee;
   }
-
+  
+#title {
+    padding-bottom: 50px;
+}
   button {
     outline: none;
     border: 4px solid ;
@@ -52,7 +55,7 @@
   
   .block:hover {
     cursor: pointer;
-    background: #0ff30f;
+    background: #70dd70;
   }
 
   .occupied:hover {

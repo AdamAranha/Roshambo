@@ -1,9 +1,8 @@
 let currentUser = 0
 const board = ['', '', '', '', '', '', '', '', '']
 
+showActivePlayer()
 
-
-document.getElementById('userId').innerHTML = currentUser
 
 // Places and X or and O based on who the current use is
 function placeChoice(id) {
@@ -15,9 +14,11 @@ function placeChoice(id) {
         if (currentUser === 0) {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'X';
+            document.getElementById(`block_${id}`).className = 'block occupied';
         } else {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'O';
+            document.getElementById(`block_${id}`).className = 'block occupied';
         }
         // Checks board for win after every move made
         if (checkWinState()) {

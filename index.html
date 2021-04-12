@@ -11,10 +11,11 @@
 
 <body>
     <div class="container">
+        <h2 id="currentPlayer"></h2>
         <h1 id="title">Tic-Tac-Toe</h1>
         <button onclick="changeUser()">Change User <span id="userId"></span></button>
 
-        <div class="play-area">
+        <div class="play-area" id="play-area">
             <div id="block_0" class="block" onclick="placeChoice('0')"></div>
             <div id="block_1" class="block" onclick="placeChoice('1')"></div>
             <div id="block_2" class="block" onclick="placeChoice('2')"></div>
@@ -32,6 +33,11 @@
     </div>
 
     <script src="script.js"></script>
+    <style>
+        .blur {
+            filter: blur(5px);
+        }
+    </style>
 </body>
 
 </html>

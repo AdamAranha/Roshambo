@@ -2,30 +2,48 @@ let currentUser = 0
 const board = ['', '', '', '', '', '', '', '', '']
 
 
-const winOptions = 1
 
-
-document.querySelector('#userId').innerHTML = currentUser
+document.getElementById('userId').innerHTML = currentUser
 
 // Places and X or and O based on who the current use is
 function placeChoice(id) {
-    if (currentUser === 0) {
-        board[id] = currentUser;
-        document.querySelector(`#block_${id}`).innerHTML = 'X';
+    // Checks to see if space is occupied
+    if (document.querySelector(`#block_${id}`).innerHTML !== '') {
+        console.log('Space occupied')
+        // Sets space selected based on the current player
     } else {
-        board[id] = currentUser;
-        document.querySelector(`#block_${id}`).innerHTML = 'O';
+        if (currentUser === 0) {
+            board[id] = currentUser;
+            document.getElementById(`block_${id}`).innerHTML = 'X';
+        } else {
+            board[id] = currentUser;
+            document.getElementById(`block_${id}`).innerHTML = 'O';
+        }
+        // Checks board for win after every move made
+        if (checkWinState()) {
+            console.log('You Win!')
+            document.getElementById('play-area').className = 'play-area blur'
+            // Disables css hovers and onclicks when game is 
+            for (let i = 0; i < 9; i++) {
+                document.getElementById(`block_${i}`).onclick = null;
+                document.getElementById(`block_${i}`).className = 'block-done';
+            }
+        } else {
+            // Changes user after a move is made
+            changeUser()
+
+            console.log('Player Switched')
+        }
 
     }
-    console.log(board)
-    checkWinState();
 }
-
 // Wipes the board clean of markers
 function resetBoard() {
-
+    document.getElementById('play-area').className = 'play-area'
     for (let i = 0; i < 9; i++) {
         document.querySelector(`#block_${i}`).innerHTML = '';
+        document.getElementById(`block_${i}`).onclick = () => placeChoice(i)
+        document.getElementById(`block_${i}`).className = 'block';
         board[i] = ''
     }
 }
@@ -35,25 +53,12 @@ function changeUser() {
         case 0:
             currentUser = 1;
             break;
-
         case 1:
             currentUser = 0;
             break;
     }
+    showActivePlayer()
 
-    document.querySelector('#userId').innerHTML = currentUser;
-}
-
-let passedArray = [a = 1, b = 2, c = 3];
-
-let check = function (a, b, c = '') {
-    let array = [...passedArray];
-    array.forEach((index) => console.log(index));
-
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] !== passedArray[i]) return false;
-    }
-    return true;
 }
 
 // Check whether the game has been won
@@ -90,9 +95,21 @@ function checkWinState() {
         (board[2] === currentUser &&
             board[4] === currentUser &&
             board[6] === currentUser)) {
-        console.log('You Win!')
-    }
-    ;
+
+        return true
+    };
+    return false
 }
 
-console.log(check(2, 3, 4));
+
+function showActivePlayer() {
+    if (currentUser) {
+        document.querySelector('#currentPlayer').innerHTML = 'USER'
+    } else {
+        document.querySelector('#currentPlayer').innerHTML = 'CPU'
+    }
+
+
+}
+
+showActivePlayer()

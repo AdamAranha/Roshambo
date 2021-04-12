@@ -1,8 +1,6 @@
 let currentUser = 0
 const board = ['', '', '', '', '', '', '', '', '']
 
-showActivePlayer()
-
 
 // Places and X or and O based on who the current use is
 function placeChoice(id) {
@@ -23,6 +21,11 @@ function placeChoice(id) {
         // Checks board for win after every move made
         if (checkWinState()) {
             console.log('You Win!')
+            if (currentUser === 0) {
+                document.getElementById('x-win').style.display = 'block';
+            } else {
+                document.getElementById('o-win').style.display = 'block';
+            }
             document.getElementById('play-area').className = 'play-area blur'
             // Disables css hovers and onclicks when game is 
             for (let i = 0; i < 9; i++) {
@@ -40,13 +43,17 @@ function placeChoice(id) {
 }
 // Wipes the board clean of markers
 function resetBoard() {
-    document.getElementById('play-area').className = 'play-area'
+    currentUser = 0;
+    document.getElementById('play-area').className = 'play-area';
+    document.getElementById('o-win').style.display = 'none';
+    document.getElementById('x-win').style.display = 'none';
     for (let i = 0; i < 9; i++) {
         document.querySelector(`#block_${i}`).innerHTML = '';
-        document.getElementById(`block_${i}`).onclick = () => placeChoice(i)
+        document.getElementById(`block_${i}`).onclick = () => placeChoice(i);
         document.getElementById(`block_${i}`).className = 'block';
-        board[i] = ''
+        board[i] = '';
     }
+    showActivePlayer();
 }
 // Changes the current user
 function changeUser() {
@@ -97,20 +104,20 @@ function checkWinState() {
             board[4] === currentUser &&
             board[6] === currentUser)) {
 
-        return true
+        return true;
     };
-    return false
+    return false;
 }
 
 
 function showActivePlayer() {
-    if (currentUser) {
-        document.querySelector('#currentPlayer').innerHTML = 'USER'
+    if (currentUser === 0) {
+        document.querySelector('#currentPlayer').innerHTML = 'USER';
     } else {
-        document.querySelector('#currentPlayer').innerHTML = 'CPU'
+        document.querySelector('#currentPlayer').innerHTML = 'CPU';
     }
 
 
 }
 
-showActivePlayer()
+showActivePlayer();

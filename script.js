@@ -21,6 +21,7 @@ function placeChoice(id) {
         // Checks board for win after every move made
         if (checkWinState()) {
             console.log('You Win!')
+            // Displays a red X or O dependig on which user won the game
             if (currentUser === 0) {
                 document.getElementById('x-win').style.display = 'block';
             } else {

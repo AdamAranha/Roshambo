@@ -61,7 +61,10 @@ color: #ff3a3a;
   }
 }
 
-
+.reset-button {
+  margin-top: 3rem;
+  border-radius: 10px;
+}
 
   button {
     outline: none;

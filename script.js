@@ -1,5 +1,6 @@
-let currentUser = 0
-const board = ['', '', '', '', '', '', '', '', '']
+let currentUser = 1
+const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+const sectionArray = ['block_0', 'block_1', 'block_2', 'block_3', 'block_4', 'block_5', 'block_6', 'block_7', 'block_8']
 
 
 // Places and X or and O based on who the current use is
@@ -9,7 +10,7 @@ function placeChoice(id) {
         console.log('Space occupied')
         // Sets space selected based on the current player
     } else {
-        if (currentUser === 0) {
+        if (currentUser === 1) {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'X';
             document.getElementById(`block_${id}`).className = 'block occupied';
@@ -22,7 +23,7 @@ function placeChoice(id) {
         if (checkWinState()) {
             console.log('You Win!')
             // Displays a red X or O dependig on which user won the game
-            if (currentUser === 0) {
+            if (currentUser === 1) {
                 document.getElementById('x-win').style.display = 'block';
             } else {
                 document.getElementById('o-win').style.display = 'block';
@@ -35,22 +36,41 @@ function placeChoice(id) {
             }
         } else {
             // Changes user after a move is made
-            changeUser()
-
+            changeUser();
             console.log('Player Switched')
+
         }
 
     }
 }
+
+function buffer(id) {
+    placeChoice(id);
+    setTimeout(() => compMove(), 500)
+}
+
+function compMove() {
+    console.table(board)
+    let freeArray = [];
+    board.forEach((square, squareIndex) => {
+        if (square === 0) {
+            freeArray.push(squareIndex)
+        }
+    })
+
+    let randomFreeSquare = freeArray[Math.floor(Math.random() * freeArray.length)];
+    placeChoice(randomFreeSquare);
+}
+
 // Wipes the board clean of markers
 function resetBoard() {
-    currentUser = 0;
+    currentUser = 1;
     document.getElementById('play-area').className = 'play-area';
     document.getElementById('o-win').style.display = 'none';
     document.getElementById('x-win').style.display = 'none';
     for (let i = 0; i < 9; i++) {
         document.querySelector(`#block_${i}`).innerHTML = '';
-        document.getElementById(`block_${i}`).onclick = () => placeChoice(i);
+        // document.getElementById(`block_${i}`).onclick = () => placeChoice(i);
         document.getElementById(`block_${i}`).className = 'block';
         board[i] = '';
     }
@@ -58,20 +78,26 @@ function resetBoard() {
 }
 // Changes the current user
 function changeUser() {
-    switch (currentUser) {
-        case 0:
-            currentUser = 1;
-            break;
-        case 1:
-            currentUser = 0;
-            break;
-    }
-    showActivePlayer()
 
+    if (currentUser === 2) {
+        currentUser = 1;
+    } else { currentUser = 2; }
+    showActivePlayer()
 }
 
 // Check whether the game has been won
 function checkWinState() {
+
+
+
+    function shortCut(num1, num2, num3) {
+        return (
+            array[num1] === currentPlayer &&
+            array[num2] === currentPlayer &&
+            array[num3] === currentPlayer
+        )
+    }
+
     // Horizontal Win Conditions
     if ((board[0] === currentUser &&
         board[1] === currentUser &&
@@ -112,7 +138,7 @@ function checkWinState() {
 
 
 function showActivePlayer() {
-    if (currentUser === 0) {
+    if (currentUser === 1) {
         document.querySelector('#currentPlayer').innerHTML = 'USER';
     } else {
         document.querySelector('#currentPlayer').innerHTML = 'CPU';

@@ -22,11 +22,11 @@ function placeChoice(id) {
 
 
 
-
-        if (checkWinState(board, currentUser).state && checkWinState(board, currentUser).winner === currentUser) {
+        const { state, winner } = checkWinState(board);
+        if (state && winner !== 'tie') {
             console.log('You Win!')
             // Displays a red X or O dependig on which user won the game
-            if (currentUser === 1) {
+            if (winner === 1) {
                 document.getElementById('x-win').style.display = 'block';
             } else {
                 document.getElementById('o-win').style.display = 'block';
@@ -37,7 +37,7 @@ function placeChoice(id) {
                 document.getElementById(`block_${i}`).onclick = null;
                 document.getElementById(`block_${i}`).className = 'block-done';
             }
-        } else if (checkWinState(board).state && checkWinState(board).winner === 'tie') {
+        } else if (state && winner === 'tie') {
             document.getElementById('play-area').className = 'play-area blur';
             console.log("It's a tie")
         } else {
@@ -101,10 +101,8 @@ function compMove() {
     })
 
     function minimax(board, depth, isMaximizing) {
-        let whoIsComp = isMaximizing ? 1 : 2;
-        let whoIsPlayer = isMaximizing ? 2 : 1;
 
-        const { state, winner } = checkWinState(board, whoIsComp);
+        const { state, winner } = checkWinState(board);
         if (state) {
             counter++
             return scores[`${winner}`];
@@ -174,39 +172,44 @@ function changeUser() {
 }
 
 // Check whether the game has been won
-function checkWinState(board, currentPlayer) {
+function checkWinState(board) {
     let winner;
+    let state = false;
 
 
-    function shortCut(num1, num2, num3) {
+    function shortCut(num1, num2, num3, players) {
         return (
-            board[num1] === currentPlayer &&
-            board[num2] === currentPlayer &&
-            board[num3] === currentPlayer
+            board[num1] === players &&
+            board[num2] === players &&
+            board[num3] === players
         )
     }
 
-    // Horizontal Win Conditions
-    if ((shortCut(0, 1, 2)) ||
-        (shortCut(3, 4, 5)) ||
-        (shortCut(6, 7, 8)) ||
-        // Vertical Win Conditions
-        (shortCut(0, 3, 6)) ||
-        (shortCut(1, 4, 7)) ||
-        (shortCut(2, 5, 8)) ||
-        // Diagonal Win Conditions
-        (shortCut(0, 4, 8)) ||
-        (shortCut(2, 4, 6))) {
+    for (let players = 1; players < 3; players++) {
+        if ((shortCut(0, 1, 2, players)) ||
+            (shortCut(3, 4, 5, players)) ||
+            (shortCut(6, 7, 8, players)) ||
+            // Vertical Win Conditions
+            (shortCut(0, 3, 6, players)) ||
+            (shortCut(1, 4, 7, players)) ||
+            (shortCut(2, 5, 8, players)) ||
+            // Diagonal Win Conditions
+            (shortCut(0, 4, 8, players)) ||
+            (shortCut(2, 4, 6, players))) {
 
-        winner = currentPlayer;
-        return { state: true, winner };
-    } else if (!board.includes(0)) {
-        winner = 'tie';
-        return { state: true, winner }
+            winner = players;
+            state = true;
+        } else if (!board.includes(0)) {
+            winner = 'tie';
+            state = true;
+        }
+
     }
 
+    // Horizontal Win Conditions
 
-    return { state: false };
+
+    return { state, winner };
 }
 
 

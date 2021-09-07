@@ -38,8 +38,7 @@ function placeChoice(id) {
             document.getElementById('play-area').className = 'play-area blur'
             // Disables css hovers and onclicks when game is 
             for (let i = 0; i < 9; i++) {
-                document.getElementById(`block_${i}`).onclick = null;
-                document.getElementById(`block_${i}`).className = 'block-done';
+                document.getElementById(`block_${i}`).removeEventListener('click', buffer, true); document.getElementById(`block_${i}`).className = 'block-done';
             }
         } else if (state && winner === 'tie') {
             document.getElementById('play-area').className = 'play-area blur';
@@ -161,10 +160,12 @@ function resetBoard() {
         console.log('complete for ', i)
         // document.getElementById(`block_${ i } `).onclick = () => placeChoice(i);
         document.getElementById(`block_${i}`).className = 'block';
-
+        document.getElementById(`block_${i}`).removeEventListener('click', buffer, true);
+        document.getElementById(`block_${i}`).addEventListener('click', buffer, true);
         board[i] = 0;
     }
     showActivePlayer();
+    whoGoesFirst(isTheComputerGoingFirst);
 }
 // Changes the current user
 function changeUser() {
@@ -232,12 +233,33 @@ function whoGoesFirst(isTheComputerGoingFirst) {
         thePlayer = 1;
     }
 
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(`block_${i}`).addEventListener('click', buffer, true);
+    }
+
 }
 
 function testFunction() {
     testBoolean = true;
     console.log('Test Button pressed')
+
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    var checkbox = document.querySelector('input[type="checkbox"]');
+
+    checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+            // do this
+            console.log('Checked');
+            isTheComputerGoingFirst = true;
+        } else {
+            // do that
+            console.log('Not checked');
+            isTheComputerGoingFirst = false;
+        }
+    });
+});
 
 showActivePlayer();
 whoGoesFirst(isTheComputerGoingFirst);

@@ -11,6 +11,26 @@
 
 <body>
     <div class="container fade-in">
+        <div class="choice">
+            <p>Who do you want to go first?</p>
+            <div class="switch-group">
+
+                <div class="player-label">
+                    <p>Player</p>
+                </div>
+                <div><label class="switch">
+                        <input type="checkbox">
+                        <div class="slider"></div>
+                    </label></div>
+                <div class="player-label">
+                    <p>AI</p>
+                </div>
+
+
+
+            </div>
+
+        </div>
         <h2 id="currentPlayer"></h2>
         <h1 id="title">Tic-Tac-Toe</h1>
         <!-- <button onclick="changeUser()">Change User <span id="userId"></span></button> -->
@@ -34,7 +54,7 @@
         <!-- Button to reset the Board -->
         <h2 id="winner"></h2>
         <button class="reset-button" onclick="resetBoard()">Reset Board</button>
-        <button class="reset-button" onclick="testFunction()">Test Button</button>
+        <!-- <button class="reset-button" onclick="testFunction()">Test Button</button> -->
 
     </div>
 

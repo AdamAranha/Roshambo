@@ -89,7 +89,7 @@ function compMove() {
     tempBoard.forEach((square, squareIndex) => {
         if (square === 0) {
             tempBoard[squareIndex] = currentUser;
-            let score = minimax(tempBoard, 0, false);
+            let score = minimax(tempBoard, setDepth, false);
             tempBoard[squareIndex] = 0;
             if (score > bestScore) {
                 bestScore = score;
@@ -101,7 +101,7 @@ function compMove() {
     function minimax(board, depth, isMaximizing) {
 
         const { state, winner } = checkWinState(board);
-        if (state) {
+        if (state || depth === 0) {
             counter++
             return winner === 'tie' ? 0.5 : depth * depth * isMaximizing ? -1 : 1;
         }
@@ -111,7 +111,7 @@ function compMove() {
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
                     board[squareIndex] = 1;
-                    let eval = minimax(board, depth + 1, false);
+                    let eval = minimax(board, depth - 1, false);
                     board[squareIndex] = 0;
                     maxEval = Math.max(maxEval, eval);
                 }
@@ -122,7 +122,7 @@ function compMove() {
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
                     board[squareIndex] = 2;
-                    let eval = minimax(board, depth + 1, true);
+                    let eval = minimax(board, depth - 1, true);
                     board[squareIndex] = 0;
                     minEval = Math.min(minEval, eval)
                 }

@@ -2,6 +2,11 @@ let currentUser = 1
 const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 const sectionArray = ['block_0', 'block_1', 'block_2', 'block_3', 'block_4', 'block_5', 'block_6', 'block_7', 'block_8']
 
+let theAI;
+let thePlayer;
+let isTheComputerGoingFirst = false;
+
+
 // Places and X or and O based on who the current use is
 function placeChoice(id) {
     // Checks to see if space is occupied
@@ -102,7 +107,7 @@ function compMove() {
 
         const { state, winner } = checkWinState(board);
         if (state || depth === 0) {
-            counter++
+            counter++;
             return winner === 'tie' ? 0.5 : depth * depth * isMaximizing ? -1 : 1;
         }
 
@@ -110,7 +115,7 @@ function compMove() {
             let maxEval = -Infinity;
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
-                    board[squareIndex] = 1;
+                    board[squareIndex] = theAI;
                     let eval = minimax(board, depth - 1, false);
                     board[squareIndex] = 0;
                     maxEval = Math.max(maxEval, eval);
@@ -121,10 +126,10 @@ function compMove() {
             let minEval = Infinity;
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
-                    board[squareIndex] = 2;
+                    board[squareIndex] = thePlayer;
                     let eval = minimax(board, depth - 1, true);
                     board[squareIndex] = 0;
-                    minEval = Math.min(minEval, eval)
+                    minEval = Math.min(minEval, eval);
                 }
             })
             return minEval;
@@ -219,9 +224,20 @@ function showActivePlayer() {
     } else {
         document.querySelector('#currentPlayer').innerHTML = 'CPU';
     }
+}
 
+function whoGoesFirst(isTheComputerGoingFirst) {
+
+    if (isTheComputerGoingFirst) {
+        theAI = 1;
+        thePlayer = 2;
+        compMove()
+    } else {
+        theAI = 2;
+        thePlayer = 1;
+    }
 
 }
 
 showActivePlayer();
-compMove();
+whoGoesFirst(isTheComputerGoingFirst);

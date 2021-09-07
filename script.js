@@ -188,19 +188,14 @@ function checkWinState(board, currentPlayer) {
 
     // Horizontal Win Conditions
     if ((shortCut(0, 1, 2)) ||
-
         (shortCut(3, 4, 5)) ||
-
         (shortCut(6, 7, 8)) ||
         // Vertical Win Conditions
         (shortCut(0, 3, 6)) ||
-
         (shortCut(1, 4, 7)) ||
-
         (shortCut(2, 5, 8)) ||
         // Diagonal Win Conditions
         (shortCut(0, 4, 8)) ||
-
         (shortCut(2, 4, 6))) {
 
         winner = currentPlayer;

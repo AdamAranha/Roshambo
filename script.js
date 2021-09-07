@@ -85,8 +85,6 @@ function compMove() {
         2: 10,
         tie: 0
     }
-    console.table(tempBoard)
-    console.log(currentUser)
 
     tempBoard.forEach((square, squareIndex) => {
         if (square === 0) {
@@ -105,7 +103,7 @@ function compMove() {
         const { state, winner } = checkWinState(board);
         if (state) {
             counter++
-            return scores[`${winner}`];
+            return winner === 'tie' ? 0.5 : depth * depth * isMaximizing ? -1 : 1;
         }
 
         if (isMaximizing) {
@@ -144,7 +142,9 @@ function compMove() {
 
 
     //-------------------------MINIMAX AI------------------------------------------------------------------
-    console.log('The best move is ', bestMove)
+
+    console.log(`Checked ${counter} possibilities`)
+    console.log(`The best move is at position: ${bestMove}`)
     placeChoice(bestMove);
 }
 

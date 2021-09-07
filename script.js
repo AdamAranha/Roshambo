@@ -10,7 +10,7 @@ let isTheComputerGoingFirst = false;
 // Places and X or and O based on who the current use is
 function placeChoice(id) {
     // Checks to see if space is occupied
-    if (document.querySelector(`#block_${id}`).innerHTML !== '') {
+    if (board[id] !== 0) {
         console.log('Space occupied')
         // Sets space selected based on the current player
     } else {
@@ -18,15 +18,14 @@ function placeChoice(id) {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'X';
             document.getElementById(`block_${id}`).className = 'block occupied';
+            console.table(board);
         } else {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'O';
             document.getElementById(`block_${id}`).className = 'block occupied';
+            console.table(board);
         }
         // Checks board for win after every move made
-
-
-
         const { state, winner } = checkWinState(board);
         if (state && winner !== 'tie') {
             console.log('You Win!')
@@ -48,10 +47,7 @@ function placeChoice(id) {
         } else {
             // Changes user after a move is made
             changeUser();
-            console.log('Player Switched')
-
         }
-
     }
 }
 
@@ -78,18 +74,6 @@ function compMove() {
     let bestScore = -Infinity;
     let bestMove;
     let counter = 0;
-
-    const scores = {
-        1: 10,
-        2: -10,
-        tie: 0
-    }
-
-    const inverseScores = {
-        1: -10,
-        2: 10,
-        tie: 0
-    }
 
     tempBoard.forEach((square, squareIndex) => {
         if (square === 0) {
@@ -136,16 +120,6 @@ function compMove() {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
     //-------------------------MINIMAX AI------------------------------------------------------------------
 
     console.log(`Checked ${counter} possibilities`)
@@ -156,14 +130,17 @@ function compMove() {
 // Wipes the board clean of markers
 function resetBoard() {
     currentUser = 1;
+
     document.getElementById('play-area').className = 'play-area';
     document.getElementById('o-win').style.display = 'none';
     document.getElementById('x-win').style.display = 'none';
     for (let i = 0; i < 9; i++) {
-        document.querySelector(`#block_${i} `).innerHTML = '';
+        document.getElementById(`block_${i} `).innerHTML = '';
+        console.log('complete for ', i)
         // document.getElementById(`block_${ i } `).onclick = () => placeChoice(i);
         document.getElementById(`block_${i} `).className = 'block';
-        board[i] = '';
+
+        board[i] = 0;
     }
     showActivePlayer();
 }
@@ -181,7 +158,6 @@ function checkWinState(board) {
     let winner;
     let state = false;
 
-
     function shortCut(num1, num2, num3, players) {
         return (
             board[num1] === players &&
@@ -191,7 +167,9 @@ function checkWinState(board) {
     }
 
     for (let players = 1; players < 3; players++) {
-        if ((shortCut(0, 1, 2, players)) ||
+        if (
+            // Horizontal Win Conditions
+            (shortCut(0, 1, 2, players)) ||
             (shortCut(3, 4, 5, players)) ||
             (shortCut(6, 7, 8, players)) ||
             // Vertical Win Conditions
@@ -204,16 +182,11 @@ function checkWinState(board) {
 
             winner = players;
             state = true;
-        } else if (!board.includes(0)) {
+        } else if (!board.includes(0) && state === false) {
             winner = 'tie';
             state = true;
         }
-
     }
-
-    // Horizontal Win Conditions
-
-
     return { state, winner };
 }
 

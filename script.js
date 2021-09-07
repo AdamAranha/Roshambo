@@ -53,7 +53,7 @@ function placeChoice(id) {
 function buffer(id) {
     placeChoice(id);
     if (currentUser === theAI) {
-        setTimeout(() => compMove(), 500)
+        compMove();
     }
 }
 
@@ -145,7 +145,7 @@ function compMove() {
 
     console.log(`Checked ${counter} possibilities`)
     console.log(`The best move is at position: ${bestMove}`)
-    placeChoice(bestMove);
+    setTimeout(() => placeChoice(bestMove), 500);
 }
 
 // Wipes the board clean of markers

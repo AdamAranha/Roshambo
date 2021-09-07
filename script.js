@@ -37,7 +37,7 @@ function placeChoice(id) {
                 document.getElementById(`block_${i}`).onclick = null;
                 document.getElementById(`block_${i}`).className = 'block-done';
             }
-        } else if (!checkWinState(board).state && checkWinState(board).winner === 'tie') {
+        } else if (checkWinState(board).state && checkWinState(board).winner === 'tie') {
             document.getElementById('play-area').className = 'play-area blur';
             console.log("It's a tie")
         } else {
@@ -178,53 +178,39 @@ function checkWinState(board, currentPlayer) {
     let winner;
 
 
-    // function shortCut(num1, num2, num3) {
-    //     return (
-    //         array[num1] === currentPlayer &&
-    //         array[num2] === currentPlayer &&
-    //         array[num3] === currentPlayer
-    //     )
-    // }
+    function shortCut(num1, num2, num3) {
+        return (
+            board[num1] === currentPlayer &&
+            board[num2] === currentPlayer &&
+            board[num3] === currentPlayer
+        )
+    }
 
     // Horizontal Win Conditions
-    if ((board[0] === currentPlayer &&
-        board[1] === currentPlayer &&
-        board[2] === currentPlayer) ||
+    if ((shortCut(0, 1, 2)) ||
 
-        (board[3] === currentPlayer &&
-            board[4] === currentPlayer &&
-            board[5] === currentPlayer) ||
+        (shortCut(3, 4, 5)) ||
 
-        (board[6] === currentPlayer &&
-            board[7] === currentPlayer &&
-            board[8] === currentPlayer) ||
+        (shortCut(6, 7, 8)) ||
         // Vertical Win Conditions
-        (board[0] === currentPlayer &&
-            board[3] === currentPlayer &&
-            board[6] === currentPlayer) ||
+        (shortCut(0, 3, 6)) ||
 
-        (board[1] === currentPlayer &&
-            board[4] === currentPlayer &&
-            board[7] === currentPlayer) ||
+        (shortCut(1, 4, 7)) ||
 
-        (board[2] === currentPlayer &&
-            board[5] === currentPlayer &&
-            board[8] === currentPlayer) ||
+        (shortCut(2, 5, 8)) ||
         // Diagonal Win Conditions
-        (board[0] === currentPlayer &&
-            board[4] === currentPlayer &&
-            board[8] === currentPlayer) ||
+        (shortCut(0, 4, 8)) ||
 
-        (board[2] === currentPlayer &&
-            board[4] === currentPlayer &&
-            board[6] === currentPlayer)) {
+        (shortCut(2, 4, 6))) {
 
         winner = currentPlayer;
         return { state: true, winner };
     } else if (!board.includes(0)) {
         winner = 'tie';
-        return { state: false, winner }
+        return { state: true, winner }
     }
+
+
     return { state: false };
 }
 

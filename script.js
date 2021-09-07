@@ -1,6 +1,7 @@
 let currentUser = 1
 const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 const sectionArray = ['block_0', 'block_1', 'block_2', 'block_3', 'block_4', 'block_5', 'block_6', 'block_7', 'block_8']
+let testBoolean = false;
 
 let theAI;
 let thePlayer;
@@ -18,7 +19,6 @@ function placeChoice(id) {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'X';
             document.getElementById(`block_${id}`).className = 'block occupied';
-            console.table(board);
         } else {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'O';
@@ -53,7 +53,9 @@ function placeChoice(id) {
 
 function buffer(id) {
     placeChoice(id);
-    setTimeout(() => compMove(), 500)
+    if (currentUser === theAI) {
+        setTimeout(() => compMove(), 500)
+    }
 }
 
 function compMove() {
@@ -87,12 +89,32 @@ function compMove() {
         }
     })
 
-    function minimax(board, depth, isMaximizing) {
 
+    function minimax(board, depth, isMaximizing) {
+        let returnScore;
         const { state, winner } = checkWinState(board);
         if (state || depth === 0) {
+            if (testBoolean) {
+                console.log(
+                    `
+                    ${board[0]}|${board[1]}|${board[2]}\n
+                    
+                    ${board[2]}|${board[3]}|${board[4]}\n
+                    ${board[6]}|${board[7]}|${board[8]}\n
+                    `
+                )
+            }
             counter++;
-            return winner === 'tie' ? 0.5 : depth * depth * isMaximizing ? -1 : 1;
+
+            switch (winner) {
+                case 'tie':
+                    return returnScore = 0.5;
+                case theAI:
+                    return depth * depth;
+                case thePlayer:
+                    return depth * depth * -1
+            }
+            return returnScore
         }
 
         if (isMaximizing) {
@@ -135,10 +157,10 @@ function resetBoard() {
     document.getElementById('o-win').style.display = 'none';
     document.getElementById('x-win').style.display = 'none';
     for (let i = 0; i < 9; i++) {
-        document.getElementById(`block_${i} `).innerHTML = '';
+        document.getElementById(`block_${i}`).innerHTML = '';
         console.log('complete for ', i)
         // document.getElementById(`block_${ i } `).onclick = () => placeChoice(i);
-        document.getElementById(`block_${i} `).className = 'block';
+        document.getElementById(`block_${i}`).className = 'block';
 
         board[i] = 0;
     }
@@ -210,6 +232,11 @@ function whoGoesFirst(isTheComputerGoingFirst) {
         thePlayer = 1;
     }
 
+}
+
+function testFunction() {
+    testBoolean = true;
+    console.log('Test Button pressed')
 }
 
 showActivePlayer();

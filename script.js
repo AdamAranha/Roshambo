@@ -88,60 +88,6 @@ function compMove() {
         }
     })
 
-
-    // function minimax(board, depth, isMaximizing) {
-    //     let returnScore;
-    //     const { state, winner } = checkWinState(board);
-    //     if (state || depth === 0) {
-    //         if (testBoolean) {
-    //             console.log(
-    //                 `
-    //                 ${board[0]}|${board[1]}|${board[2]}\n
-
-    //                 ${board[2]}|${board[3]}|${board[4]}\n
-    //                 ${board[6]}|${board[7]}|${board[8]}\n
-    //                 `
-    //             )
-    //         }
-    //         counter++;
-
-    //         switch (winner) {
-    //             case 'tie':
-    //                 return returnScore = 0.5;
-    //             case theAI:
-    //                 return depth * depth;
-    //             case thePlayer:
-    //                 return depth * depth * -1
-    //         }
-    //         return returnScore
-    //     }
-
-    //     if (isMaximizing) {
-    //         let maxEval = -Infinity;
-    //         board.forEach((square, squareIndex) => {
-    //             if (square === 0) {
-    //                 board[squareIndex] = theAI;
-    //                 let eval = minimax(board, depth - 1, false);
-    //                 board[squareIndex] = 0;
-    //                 maxEval = Math.max(maxEval, eval);
-    //             }
-    //         })
-    //         return maxEval
-    //     } else {
-    //         let minEval = Infinity;
-    //         board.forEach((square, squareIndex) => {
-    //             if (square === 0) {
-    //                 board[squareIndex] = thePlayer;
-    //                 let eval = minimax(board, depth - 1, true);
-    //                 board[squareIndex] = 0;
-    //                 minEval = Math.min(minEval, eval);
-    //             }
-    //         })
-    //         return minEval;
-    //     }
-
-    // }
-    //----------------------------------APLA BETA PRUNING --------------------------------------------
     function minimax(board, depth, alpha, beta, isMaximizing) {
         let returnScore;
         const { state, winner } = checkWinState(board);

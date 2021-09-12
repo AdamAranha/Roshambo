@@ -23,7 +23,6 @@ function placeChoice(id) {
             board[id] = currentUser;
             document.getElementById(`block_${id}`).innerHTML = 'O';
             document.getElementById(`block_${id}`).className = 'block occupied';
-            console.table(board);
         }
         // Checks board for win after every move made
         const { state, winner } = checkWinState(board);
@@ -88,6 +87,7 @@ function compMove() {
         }
     })
 
+
     function minimax(board, depth, alpha, beta, isMaximizing) {
         let returnScore;
         const { state, winner } = checkWinState(board);
@@ -120,7 +120,7 @@ function compMove() {
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
                     board[squareIndex] = theAI;
-                    let eval = minimax(board, depth - 1, false);
+                    let eval = minimax(board, depth - 1, alpha, beta, false);
                     board[squareIndex] = 0;
                     maxEval = Math.max(maxEval, eval);
                     alpha = Math.max(alpha, eval);
@@ -133,10 +133,10 @@ function compMove() {
             board.forEach((square, squareIndex) => {
                 if (square === 0) {
                     board[squareIndex] = thePlayer;
-                    let eval = minimax(board, depth - 1, true);
+                    let eval = minimax(board, depth - 1, alpha, beta, true);
                     board[squareIndex] = 0;
                     minEval = Math.min(minEval, eval);
-                    beta = Math.min(beta, eval);
+                    alpha = Math.max(alpha, eval);
                     if (beta <= alpha) return;
                 }
             })
@@ -160,8 +160,6 @@ function resetBoard() {
     document.getElementById('x-win').style.display = 'none';
     for (let i = 0; i < 9; i++) {
         document.getElementById(`block_${i}`).innerHTML = '';
-        console.log('complete for ', i)
-        // document.getElementById(`block_${ i } `).onclick = () => placeChoice(i);
         document.getElementById(`block_${i}`).className = 'block';
         document.getElementById(`block_${i}`).removeEventListener('click', buffer, true);
         document.getElementById(`block_${i}`).addEventListener('click', buffer, true);
@@ -240,6 +238,22 @@ function whoGoesFirst(isTheComputerGoingFirst) {
         document.getElementById(`block_${i}`).addEventListener('click', buffer, true);
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkbox = document.querySelector('input[type="checkbox"]');
+
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                // do this
+                console.log('Checked');
+                isTheComputerGoingFirst = true;
+            } else {
+                // do that
+                console.log('Not checked');
+                isTheComputerGoingFirst = false;
+            }
+        });
+    });
+
 }
 
 function testFunction() {
@@ -248,21 +262,7 @@ function testFunction() {
 
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    var checkbox = document.querySelector('input[type="checkbox"]');
 
-    checkbox.addEventListener('change', function () {
-        if (checkbox.checked) {
-            // do this
-            console.log('Checked');
-            isTheComputerGoingFirst = true;
-        } else {
-            // do that
-            console.log('Not checked');
-            isTheComputerGoingFirst = false;
-        }
-    });
-});
 
 showActivePlayer();
 whoGoesFirst(isTheComputerGoingFirst);

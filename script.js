@@ -238,21 +238,7 @@ function whoGoesFirst(isTheComputerGoingFirst) {
         document.getElementById(`block_${i}`).addEventListener('click', buffer, true);
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var checkbox = document.querySelector('input[type="checkbox"]');
 
-        checkbox.addEventListener('change', function () {
-            if (checkbox.checked) {
-                // do this
-                console.log('Checked');
-                isTheComputerGoingFirst = true;
-            } else {
-                // do that
-                console.log('Not checked');
-                isTheComputerGoingFirst = false;
-            }
-        });
-    });
 
 }
 
@@ -262,7 +248,21 @@ function testFunction() {
 
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    var checkbox = document.querySelector('input[type="checkbox"]');
 
+    checkbox.addEventListener('change', function () {
+        if (checkbox.checked) {
+            // do this
+            console.log('Checked');
+            isTheComputerGoingFirst = true;
+        } else {
+            // do that
+            console.log('Not checked');
+            isTheComputerGoingFirst = false;
+        }
+    });
+});
 
 showActivePlayer();
 whoGoesFirst(isTheComputerGoingFirst);

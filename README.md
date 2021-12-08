@@ -1,4 +1,4 @@
 # TicTacToe
 An unbeatable game of tic tac toe you can play against the computer.
 
-[Live Link](https://adamaranha.github.io/Roshambo/)
+[Live Link](https://adamaranha.github.io/TicTacToe/)
